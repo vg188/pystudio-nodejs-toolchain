@@ -1,8 +1,8 @@
-# PyStudio Python toolchain
+# PyStudio Node.js toolchain
 
 Source: `msmt2018/termux-packages`
 
-This repository builds the Python toolchain packages for PyStudio:
+This repository builds the Node.js toolchain packages for PyStudio:
 
 - Android package: `com.vchangxiao.pystudio`
 - Prefix: `/data/data/com.vchangxiao.pystudio/files/usr`
@@ -10,8 +10,8 @@ This repository builds the Python toolchain packages for PyStudio:
 
 The default workflow builds `aarch64` packages for:
 
-- `python`
-- `python-pip`
+- `nodejs`
+- `npm`
 
 Dependencies are built from source instead of downloaded from the official
 Termux repositories, so the generated packages keep the PyStudio prefix.
@@ -19,5 +19,5 @@ Termux repositories, so the generated packages keep the PyStudio prefix.
 The workflow publishes raw `.deb` files and a minimal apt repository archive
 with `Packages`, `Packages.gz`, and `Packages.xz` indexes.
 
-Node.js and C/C++ toolchains are built in separate repositories so PyStudio can
+Python and C/C++ toolchains are built in separate repositories so PyStudio can
 install only the toolchain a project actually needs.
