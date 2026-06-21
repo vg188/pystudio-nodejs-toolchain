@@ -38,9 +38,9 @@ termux_step_host_build() {
 		6217f58ca39b23127605cfc6c7e0d3475fe4b0d63157011383d716cb41617886
 	tar xf $TERMUX_PKG_CACHEDIR/$ICU_TAR
 	cd icu/source
-	export CC="$TERMUX_HOST_LLVM_BASE_DIR/bin/clang"
-	export CXX="$TERMUX_HOST_LLVM_BASE_DIR/bin/clang++"
-	export LD="$TERMUX_HOST_LLVM_BASE_DIR/bin/clang++"
+	export CC="gcc"
+	export CXX="g++"
+	export LD="g++"
 	if [ "$TERMUX_ARCH_BITS" = 32 ]; then
 		./configure --prefix $TERMUX_PKG_HOSTBUILD_DIR/icu-installed \
 			--disable-samples \
