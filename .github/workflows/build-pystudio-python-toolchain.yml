@@ -1,13 +1,13 @@
-name: Build PyStudio Runtime Packages
+name: Build PyStudio Python Toolchain
 
 on:
   push:
     branches:
       - main
     paths:
-      - ".github/workflows/build-pystudio-runtime-packages.yml"
+      - ".github/workflows/build-pystudio-python-toolchain.yml"
       - "pystudio-package-set.txt"
-      - "PYSTUDIO_RUNTIME_PACKAGES.md"
+      - "PYSTUDIO_PYTHON_TOOLCHAIN.md"
       - "scripts/**"
       - "packages/**"
       - "root-packages/**"
@@ -32,7 +32,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: pystudio-runtime-${{ github.ref }}-${{ github.event_name }}
+  group: pystudio-python-toolchain-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: false
 
 env:
@@ -113,7 +113,7 @@ jobs:
           set -euo pipefail
           ./scripts/free-space.sh
 
-      - name: Build PyStudio packages
+      - name: Build PyStudio Python toolchain
         shell: bash
         run: |
           set -euo pipefail
@@ -169,21 +169,21 @@ jobs:
             sort -z |
             xargs -0 sha256sum > "SHA256SUMS-$arch.txt"
 
-          tar -czf "pystudio-runtime-repo-$arch.tar.gz" -C "$repo_dir" .
-          tar -czf "pystudio-runtime-debs-$arch.tar.gz" -C output .
+          tar -czf "pystudio-python-toolchain-repo-$arch.tar.gz" -C "$repo_dir" .
+          tar -czf "pystudio-python-toolchain-debs-$arch.tar.gz" -C output .
 
           find "$repo_dir" -type f -print | sort
           cat "SHA256SUMS-$arch.txt"
 
-      - name: Upload runtime package artifact
+      - name: Upload Python toolchain artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pystudio-runtime-${{ matrix.target_arch }}-${{ github.run_number }}
+          name: pystudio-python-toolchain-${{ matrix.target_arch }}-${{ github.run_number }}
           path: |
             output/**/*.deb
             repo-${{ matrix.target_arch }}/**
-            pystudio-runtime-repo-${{ matrix.target_arch }}.tar.gz
-            pystudio-runtime-debs-${{ matrix.target_arch }}.tar.gz
+            pystudio-python-toolchain-repo-${{ matrix.target_arch }}.tar.gz
+            pystudio-python-toolchain-debs-${{ matrix.target_arch }}.tar.gz
             SHA256SUMS-${{ matrix.target_arch }}.txt
           if-no-files-found: error
 
@@ -195,7 +195,7 @@ jobs:
     if: ${{ needs.resolve-inputs.outputs.publish_release == 'true' }}
     runs-on: ubuntu-24.04
     steps:
-      - name: Download runtime artifacts
+      - name: Download Python toolchain artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
@@ -209,8 +209,8 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: pystudio-runtime-r${{ github.run_number }}
-          name: PyStudio runtime packages r${{ github.run_number }}
+          tag_name: pystudio-python-toolchain-r${{ github.run_number }}
+          name: PyStudio Python toolchain r${{ github.run_number }}
           files: |
             artifacts/**/*.deb
             artifacts/**/*.tar.gz

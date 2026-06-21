@@ -1,8 +1,8 @@
-# PyStudio runtime packages
+# PyStudio Python toolchain
 
 Source: `msmt2018/termux-packages`
 
-This repository builds runtime packages for PyStudio:
+This repository builds the Python toolchain packages for PyStudio:
 
 - Android package: `com.vchangxiao.pystudio`
 - Prefix: `/data/data/com.vchangxiao.pystudio/files/usr`
@@ -19,5 +19,5 @@ Termux repositories, so the generated packages keep the PyStudio prefix.
 The workflow publishes raw `.deb` files and a minimal apt repository archive
 with `Packages`, `Packages.gz`, and `Packages.xz` indexes.
 
-Additional packages such as `nodejs npm` can be built with `workflow_dispatch`
-by passing them in the `packages` input.
+Node.js and C/C++ toolchains are built in separate repositories so PyStudio can
+install only the toolchain a project actually needs.
